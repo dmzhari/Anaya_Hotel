@@ -14,6 +14,14 @@ body {
     background: rgb(58, 8, 151);
 }
 
+a.nav-link:active,
+a.nav-link:focus,
+a.nav-link:hover {
+    background-color: rgb(245, 35, 140);
+    border-radius: 10px;
+    color: #fff !important;
+}
+
 .card {
     border: none;
     background: none;
@@ -30,4 +38,31 @@ body {
     border-radius: 0;
     background-image: linear-gradient(-45deg, rgb(71, 80, 80), rgb(147, 147, 240));
     background-size: 400% 400%;
+}
+
+.dropdown-menu {
+    background-color: rgb(117, 42, 255);
+}
+
+.dropdown-item {
+    color: #ffffff;
+}
+
+.dropdown-toggle:focus {
+    box-shadow: none !important
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+    color: #ffffff;
+    background-color: rgb(245, 35, 140);
+}
+
+@media only screen and (max-width: 767.98px) {
+
+    a.nav-link:active,
+    a.nav-link:focus,
+    a.nav-link:hover {
+        border-radius: 0px;
+    }
 }

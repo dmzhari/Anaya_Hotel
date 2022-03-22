@@ -7,6 +7,11 @@ if (!isset($_SESSION['username']) && !isset($_SESSION['level']) == 'admin') {
   exit;
 }
 
+$username = $_SESSION['username'];
+$sql      = "SELECT id FROM tb_user WHERE username = '$username'";
+$query    = $conn->query($sql);
+$fetch    = $query->fetch_assoc();
+
 ?>
 
 <!DOCTYPE html>
@@ -40,13 +45,30 @@ if (!isset($_SESSION['username']) && !isset($_SESSION['level']) == 'admin') {
             <h5><a class="nav-link" href="#" id="tombol_kamar">Kamar</a></h5>
           </li>
           <li class="nav-item">
-            <h5><a class="nav-link" href="#" id="tombol_fasilitas">Fasilitas Kamar</a></h5>
+            <h5><a class="nav-link" href="#" id="tombol_reservasi">Data Reservasi</a></h5>
+          </li>
+          <li class="nav-item dropdown">
+            <h5 data-bs-toggle="dropdown">
+              <a href="#" class="nav-link dropdown-toggle">Fasilitas</a>
+            </h5>
+            <div class="dropdown-menu">
+              <a class="nav-link" href="#" id="tombol_fasilitas">Fasilitas Kamar</a>
+              <a class="nav-link" href="#" id="tombol_fasilitas_umum">Fasilitas Umum</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <h5 data-bs-toggle="dropdown">
+              <a href="#" class="nav-link dropdown-toggle">User</a>
+            </h5>
+            <div class="dropdown-menu">
+              <a href="#" class="dropdown-item" id="user">Data User</a>
+              <a href="#" class="dropdown-item" id="profile">Profile</a>
+            </div>
+            <!-- <ul class=""></ul>
+            <h5><a href="#" class="nav-link" id="user">User</a></h5> -->
           </li>
           <li class="nav-item">
-            <h5><a class="nav-link" href="#" id="tombol_fasilitas_umum">Fasilitas Umum</a></h5>
-          </li>
-          <li class="nav-item">
-            <h5><a class="nav-link" href="logout.php" id="logout.php">Logout</a></h5>
+            <h5><a class="nav-link text-danger" href="logout.php" id="logout.php">Logout</a></h5>
           </li>
         </ul>
 
@@ -59,6 +81,64 @@ if (!isset($_SESSION['username']) && !isset($_SESSION['level']) == 'admin') {
 
   </div>
 
+  <div class="modal fade" id="modal_lihat_reservasi">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <input type="text" id="idpelanggan" value="3" hidden>
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title text-center">Data Tamu</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- Modal body -->
+        <div id="pelanngan" class="modal-body">
+
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <p class="text-center">@Desain by UKK RPL 2022</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!----------------------------- Script Awal Modal Check Reservasi -------------------------------- -->
+  <div class="modal fade" id="modal_check_reservasi">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Reservasi</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="form-floating mt-2 mb-2">
+            <select class="form-select mt-3" id="proses" name="proses">
+              <option value="1"> Selesai Checkin </option>
+              <option value="0"> Dalam Proses </option>
+              <option value="3"> Batal </option>
+            </select>
+            <label for="idkamar">Proses</label>
+          </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="id_proses">Proses</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!----------------------------- Script Akhir Modal Check Reservasi -------------------------------- -->
+
   <!-- SCRIPT FOOTER -->
   <div class="mt-5 p-2 bg-dark text-white text-center">
     <p>@Desain by UKK RPL 2022</p>
@@ -67,6 +147,7 @@ if (!isset($_SESSION['username']) && !isset($_SESSION['level']) == 'admin') {
   <!-- SCRIPT JAVASCRIPT -->
   <script src="../js/jquery.min.js"></script>
   <script src="../js/bootstrap5.0.1.bundle.min.js"></script>
+  <script src="crud_js/pesan.js"></script>
 
   <script type="text/javascript">
     $(document).ready(function() {
@@ -90,6 +171,21 @@ if (!isset($_SESSION['username']) && !isset($_SESSION['level']) == 'admin') {
       /*tombol tambah(+) fasilitas umum*/
       $("#add_fasilitas_umum").click(function() {
         $("#modal_tambah_fasilitas_umum").modal('show');
+      });
+
+      /* Tombol Menu Reservasi */
+      $("#tombol_reservasi").click(function() {
+        load_reservasi();
+      });
+
+      /* Tombol Profile User */
+      $('#profile').click(function() {
+        load_profile_user();
+      })
+
+      /* Tombol Menu User */
+      $('#user').click(function() {
+        load_user();
       });
 
       /*Saat klik tombol Menu Kamar*/
@@ -118,6 +214,44 @@ if (!isset($_SESSION['username']) && !isset($_SESSION['level']) == 'admin') {
       $("#show_fasilitas_umum").click(function() {
         $("#lihat_data_fasilitas_umum").modal("show");
       });
+
+      function load_reservasi() {
+        var id = 0;
+        $.ajax({
+          url: "proses/load_table_reservasi.php",
+          method: "POST",
+          data: {
+            ids: id
+          },
+          success: function(data) {
+            //alert(data);return;
+            $("#data").html(data).refresh;
+          }
+        });
+      }
+
+
+      function load_profile_user() {
+        $.ajax({
+          url: 'proses/load_profile_user.php',
+          method: 'POST',
+          data: {
+            id: <?= $fetch['id'] ?>
+          },
+          success: function(data) {
+            $('#data').html(data).refresh;
+          }
+        });
+      }
+
+      function load_user() {
+        $.ajax({
+          url: "proses/load_user.php",
+          success: function(data) {
+            $("#data").html(data).refresh;
+          }
+        });
+      }
 
 
       function load_kamar() {

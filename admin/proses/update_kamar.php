@@ -1,22 +1,22 @@
 <?php
- //print_r($_POST);
- include "../../includes/koneksi.php";
- 
- $idk       = $_POST['idk'];
- $nama      = $_POST['nama'];
- $jkamar    = $_POST['jkamar'];
+session_start();
+include "../../includes/koneksi.php";
 
- $sql = "UPDATE tb_kamar SET nama_kamar ='$nama', total_kamar='$jkamar' 
-         WHERE (id_kamar = '$idk')";
-				
-            if($conn->query($sql) == 1)
-            {
-             $data = "OK";
-             echo $data;               
-			}
-			else
-			{
-			 $data = "ERROR";
-			 echo $data;
-			}
-?>
+if (!isset($_SESSION['username']) && !isset($_SESSION['level']) == 'admin') {
+	header('Location: ../../index.php');
+	exit();
+}
+
+$idk       = htmlspecialchars($conn->real_escape_string($_POST['idk']));
+$nama      = htmlspecialchars($conn->real_escape_string($_POST['nama']));
+$jkamar    = htmlspecialchars($conn->real_escape_string($_POST['jkamar']));
+
+$sql = "UPDATE tb_kamar SET nama_kamar ='$nama', total_kamar='$jkamar' WHERE (id_kamar = '$idk')";
+
+if ($conn->query($sql) == 1) {
+	$data = "OK";
+	echo $data;
+} else {
+	$data = "ERROR";
+	echo $data;
+}

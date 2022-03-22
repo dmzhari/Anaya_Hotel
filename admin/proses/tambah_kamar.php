@@ -1,6 +1,12 @@
 <?php
-//print_r($_POST);
+session_start();
 include "../../includes/koneksi.php";
+
+if (!isset($_SESSION['username']) && !isset($_SESSION['level']) == 'admin') {
+	header('Location: ../../index.php');
+	exit();
+}
+
 $nama      = htmlspecialchars($conn->real_escape_string($_POST['nama']));
 $jkamar    = htmlspecialchars($conn->real_escape_string($_POST['jkamar']));
 

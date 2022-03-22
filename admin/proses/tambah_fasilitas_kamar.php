@@ -1,10 +1,15 @@
 <?php
-//print_r($_POST);
-
+session_start();
 include "../../includes/koneksi.php";
 include "../../includes/timezone.php";
-$idkamar        	 = $_POST['idkamar'];
-$nama_fasilitas 	 = $_POST['nama_fasilitas'];
+
+if (!isset($_SESSION['username']) && !isset($_SESSION['level']) == 'admin') {
+	header('Location: ../../index.php');
+	exit();
+}
+
+$idkamar        	 = htmlspecialchars($conn->real_escape_string($_POST['idkamar']));
+$nama_fasilitas 	 = htmlspecialchars($conn->real_escape_string($_POST['nama_fasilitas']));
 $today				 = date("Y-m-d h:i:sa");
 $jgambar			 = $nama_fasilitas . "_" . $today;
 

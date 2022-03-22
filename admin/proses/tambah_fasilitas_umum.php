@@ -1,7 +1,13 @@
 <?php
-//print_r($_POST);
+session_start();
 include "../../includes/koneksi.php";
 include "../../includes/timezone.php";
+
+if (!isset($_SESSION['username']) && !isset($_SESSION['level']) == 'admin') {
+	header('Location: ../../index.php');
+	exit();
+}
+
 
 $namafu        	= htmlspecialchars($conn->real_escape_string($_POST['namafu']));
 $ketfu 			= htmlspecialchars($conn->real_escape_string($_POST['ketfu']));

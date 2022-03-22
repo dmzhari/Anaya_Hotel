@@ -1,8 +1,10 @@
 <?php
+error_reporting(0);
+
 $namaserver = "localhost";
 $username = "root";
 $password = "";
-$database= "hotel_ku";
+$database = "hotel_ku";
 
 // Create connection
 $conn = new mysqli($namaserver, $username, $password, $database);
@@ -12,4 +14,3 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 //echo "Connected successfully";
-?>
