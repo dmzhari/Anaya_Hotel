@@ -1,67 +1,71 @@
 <?php
- //print_r($_POST);
- include "../../includes/koneksi.php";
- ?>
+session_start();
+include "../../includes/koneksi.php";
+
+if (!isset($_SESSION['username']) && !isset($_SESSION['level']) == 'admin') {
+  header('Location: ../../index.php');
+  exit();
+}
+?>
 
 <div class="container mt-2" id="data_fasilitas_umum">
-  <h2 class="text-center" >DATA FASILITAS UMUM</h2>
+  <h2 class="text-center">DATA FASILITAS UMUM</h2>
   <h5 class="text-center">Hotel Anaya</h5>
-  
+
   <!-- Desain Pencarian Tanggal dan Nama -->
-   <div class="d-flex justify-content-between d-flex flex-row-reverse"">
-     <div class="form-floating mb-2 mt-3 ">
-       <input type="text" class="form-control" id="cari_fasilitas_umum"  name="cari_fasilitas_umum">
-       <label for="cari_fasilitas_umum">Cari Fasilitas Umum</label>
-      </div> 
-      <div class="form-floating mb-2 mt-3">
-           <button type="button" onclick="add_modal_fasilitas_umum()" class="btn btn-outline-primary">Tambah Data</button>
-     </div>
-   </div> 
- 
-   <!-- Desain Box Tabel Kamar-->
-   <div class="d-flex justify-content-center">
-    <div class="card mt-2 mb-4" style="width:2000px">
-      <div class="card-body">
-      
-       <div id="cari_nama" style="overflow-x:auto;">
-         <table id="tb_kamar" class="table table-striped" style="width:100%">
+  <div class="d-flex justify-content-between d-flex flex-row-reverse"">
+     <div class=" form-floating mb-2 mt-3 ">
+       <input type=" text" class="form-control" id="cari_fasilitas_umum" name="cari_fasilitas_umum">
+    <label for="cari_fasilitas_umum">Cari Fasilitas Umum</label>
+  </div>
+  <div class="form-floating mb-2 mt-3">
+    <button type="button" onclick="add_modal_fasilitas_umum()" class="btn btn-outline-primary">Tambah Data</button>
+  </div>
+</div>
+
+<!-- Desain Box Tabel Kamar-->
+<div class="d-flex justify-content-center">
+  <div class="card mt-2 mb-4" style="width:2000px">
+    <div class="card-body">
+
+      <div id="cari_nama" style="overflow-x:auto;">
+        <table id="tb_kamar" class="table table-striped" style="width:100%">
           <thead>
             <tr>
-                <th>Nama Fasilitasr</th>
-                <th class="text-center">Keterangan</th>
-                <th class="text-center">Aksi</th>
+              <th>Nama Fasilitasr</th>
+              <th class="text-center">Keterangan</th>
+              <th class="text-center">Aksi</th>
             </tr>
           </thead>
           <tbody>
             <?php
-              $sql="SELECT * FROM tb_fasilitas_umum ORDER BY id DESC LIMIT 5";
-              $result= $conn->query($sql);
-              if ($result->num_rows > 0 ) {
-                while ($row = $result->fetch_assoc())
-                {
-                  
-                ?>
-            <tr>
-                <td><?php echo $row["nama_fasilitas"]; ?></td>
-                <td class="text-center"><?php echo $row["keterangan"]; ?></td>
-                <td class="text-center">
-                  <a href="#" data-id="" class="btn btn-success" onClick="show_modal_fasilitas_umum(this.id,1)" id="<?php echo $row["id"]; ?>">Lihat</a> 
-                  <a href="#" data-id="" class="btn btn-primary" onClick="show_modal_fasilitas_umum(this.id,0)" id="<?php echo $row["id"]; ?>">Edit</a>
-                  <a href="#" data-id="" class="btn btn-danger" onClick="delete_fasilitas_umum(this.id)" id="<?php echo $row["id"]; ?>">Delete</a>
-                </td>
-            </tr>
+            $sql = "SELECT * FROM tb_fasilitas_umum ORDER BY id DESC LIMIT 5";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+              while ($row = $result->fetch_assoc()) {
+
+            ?>
+                <tr>
+                  <td><?php echo $row["nama_fasilitas"]; ?></td>
+                  <td class="text-center"><?php echo $row["keterangan"]; ?></td>
+                  <td class="text-center">
+                    <a href="#" data-id="" class="btn btn-success" onClick="show_modal_fasilitas_umum(this.id,1)" id="<?php echo $row["id"]; ?>">Lihat</a>
+                    <a href="#" data-id="" class="btn btn-primary" onClick="show_modal_fasilitas_umum(this.id,0)" id="<?php echo $row["id"]; ?>">Edit</a>
+                    <a href="#" data-id="" class="btn btn-danger" onClick="delete_fasilitas_umum(this.id)" id="<?php echo $row["id"]; ?>">Delete</a>
+                  </td>
+                </tr>
             <?php
-                }
-              } 
+              }
+            }
             ?>
           </tbody>
-         </table>
-        </div>
-
+        </table>
       </div>
-     </div>
-   </div>
-   
+
+    </div>
+  </div>
+</div>
+
 </div>
 
 <!------------------------------ Script Awal Modal Tambah Fasilitas Umum ------------------------------ -->
@@ -88,7 +92,7 @@
           </div>
           <div class="mb-3 mt-3">
             <label for="upload_fasilitas">Pilih Gambar ( Dimensi: 1220 x 360 ):</label>
-            <input type="file" class="form-control" name="upload_fasilitas" id="upload_fasilitas">        
+            <input type="file" class="form-control" name="upload_fasilitas" id="upload_fasilitas">
           </div>
         </form>
 
@@ -118,7 +122,7 @@
 
       <!-- Modal body -->
       <div id="tampil_fasilitas_umum" class="modal-body">
-        
+
       </div>
 
     </div>
@@ -127,113 +131,97 @@
 <!----------------------------- Script Akhir Modal Lihat Data Fasilitas Umum-------------------------------- -->
 
 <script type="text/javascript">
-
- function add_modal_fasilitas_umum()
-  {
+  function add_modal_fasilitas_umum() {
     $("#modal_tambah_fasilitas_umum").modal('toggle');
   }
 
-  function show_modal_fasilitas_umum(id,cek)
-  {
+  function show_modal_fasilitas_umum(id, cek) {
     $("#lihat_data_fasilitas_umum").modal('toggle');
     $.ajax({
-     url: "proses/tampil_fasilitas_umum.php",
-     method: "GET",
-     data:{
-		   idp:id, cek:cek
-	      },
-     success: function(data)
-      {
+      url: "proses/tampil_fasilitas_umum.php",
+      method: "GET",
+      data: {
+        idp: id,
+        cek: cek
+      },
+      success: function(data) {
         $("#tampil_fasilitas_umum").html(data).refresh;
       }
     });
   }
-/*BAGIAN DELETE */
-function delete_fasilitas_umum(id)
-  {
+  /*BAGIAN DELETE */
+  function delete_fasilitas_umum(id) {
     $.ajax({
-     url: "proses/delete_fasilitas_umum.php",
-     method: "POST",
-     data:{
-		        idp:id
-	        },
-        success: function(data)
-        {
-        if (data=="OK") 
-         {
+      url: "proses/delete_fasilitas_umum.php",
+      method: "POST",
+      data: {
+        idp: id
+      },
+      success: function(data) {
+        if (data == "OK") {
           alert("Data Berhasil dihapus!");
-          window.location.href="index.php?id=fasilitas_umum";
-		     } 
-          if (data=="ERROR") 
-           {
-            alert("Data Gagal dihapus!");
-	         }
+          window.location.href = "index.php?id=fasilitas_umum";
         }
+        if (data == "ERROR") {
+          alert("Data Gagal dihapus!");
+        }
+      }
     });
   }
 
   /*BAGIAN ADD */
-$(function(){	
-   $("#add_fasilitas_umum").on('click', function(){
-     var namafu       = $("#nama_fasilitas_umum").val();
-     var ketfu        = $("#ket").val();
-     var gambarfu     = $("#upload_fasilitas").val();
-     var form_datafu  = new FormData(); 
+  $(function() {
+    $("#add_fasilitas_umum").on('click', function() {
+      var namafu = $("#nama_fasilitas_umum").val();
+      var ketfu = $("#ket").val();
+      var gambarfu = $("#upload_fasilitas").val();
+      var form_datafu = new FormData();
 
 
-	 if ( (namafu=="") || (ketfu==""))
-	 {
+      if ((namafu == "") || (ketfu == "")) {
         alert("Terjadi kesalahan. Ada data yang kosong!");
         return;
-	 }
-   if (gambarfu=="")
-    {
-    alert("Terjadi kesalahan. Gambar kosong!");
-       return;
-    }
-	 
-   var oFReader = new FileReader();
-   oFReader.readAsDataURL(document.getElementById("upload_fasilitas").files[0]);
-   var f = document.getElementById("upload_fasilitas").files[0];
-   var fsize = f.size||f.fileSize;
-   if(fsize > 2000000)
-   {
-    alert("Terjadi kesalahan. Gambar Besar!");
-    return;
-   }
-   else
-   {
-      form_datafu.append("namafu",namafu);
-      form_datafu.append("fotofu",  document.getElementById('upload_fasilitas').files[0]);
-      form_datafu.append("ketfu",ketfu);
-      form_datafu.append("gambarfu",gambarfu);
-	 
-     $.ajax({
-     url: "proses/tambah_fasilitas_umum.php",
-     method: "POST",
-     data: form_datafu,
-     contentType: false,
-     cache: false,
-     processData: false,
-     success: function(data)
-      {
-        //alert(data);return;
-        if (data=="OK") 
-         {
-          alert("Data Tersimpan!");
-          document.getElementById("form_fu").reset();
-          window.location.href="index.php?id=fasilitas_umum";
-		     } 
-          if (data=="ERROR") 
-           {
-            alert("Data TIDAK tersimpan!");
-	         }
-	     } 
+      }
+      if (gambarfu == "") {
+        alert("Terjadi kesalahan. Gambar kosong!");
+        return;
+      }
 
-      }); 
-    } 
+      var oFReader = new FileReader();
+      oFReader.readAsDataURL(document.getElementById("upload_fasilitas").files[0]);
+      var f = document.getElementById("upload_fasilitas").files[0];
+      var fsize = f.size || f.fileSize;
+      if (fsize > 2000000) {
+        alert("Terjadi kesalahan. Gambar Besar!");
+        return;
+      } else {
+        form_datafu.append("namafu", namafu);
+        form_datafu.append("fotofu", document.getElementById('upload_fasilitas').files[0]);
+        form_datafu.append("ketfu", ketfu);
+        form_datafu.append("gambarfu", gambarfu);
+
+        $.ajax({
+          url: "proses/tambah_fasilitas_umum.php",
+          method: "POST",
+          data: form_datafu,
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function(data) {
+            //alert(data);return;
+            if (data == "OK") {
+              alert("Data Tersimpan!");
+              document.getElementById("form_fu").reset();
+              window.location.href = "index.php?id=fasilitas_umum";
+            }
+            if (data == "ERROR") {
+              alert("Data TIDAK tersimpan!");
+            }
+          }
+
+        });
+      }
+    });
+
   });
-	
-});
-
- </script>
+</script>

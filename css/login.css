@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: rgb(231, 231, 250);
+    /* background: url('../../admin_page/img/bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; */
+}
+
+
+.login {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.card {
+    background-image: linear-gradient(-45deg, rgb(247, 248, 248), rgb(147, 147, 240));
+    background-size: 400% 200%;
+    width: 100%;
+    box-shadow: 10px 10px 10px rgb(125, 116, 204);
+}
+
+.card-header {
+    margin-top: 20px;
+    background-color: linear-gradient(-45deg, rgb(65, 206, 206), rgb(147, 147, 240));
+    color: rgb(54, 60, 87);
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 10px 10px 10px rgb(125, 116, 204);
+    /* color: rgb(121, 22, 179); */
+}
+
+.svg-top {
+    height: 150px;
+    overflow: hidden;
+}
+
+.svg-bottom {
+    height: 155px;
+    overflow: hidden;
+}
+
+input[type=password],
+input[type=text],
+.input-group-text {
+    font-family: 'Poppins', sans-serif;
+    border: none;
+    font-size: 17px;
+}
+
+@media only screen and (max-width: 600px) {
+    .card-header {
+        font-family: 'Arial Narrow Bold', sans-serif;
+        background: none;
+        color: rgb(46, 46, 70);
+        border: none;
+    }
+
+    input[type=password],
+    input[type=text] {
+        font-size: 20px;
+    }
+
+    .svg-bottom,
+    .svg-top {
+        height: 110px;
+    }
+}
