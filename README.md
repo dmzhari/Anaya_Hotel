@@ -51,11 +51,4 @@ TAMPILAN ADMIN
 ![image](https://user-images.githubusercontent.com/88584119/153409662-5586d02e-f9f2-4687-96f5-90030202423f.png)
 
 
-Link Demo : https://ukk-rpl-2022.smkn1kuwus.sch.id/
-
-Link Tutorial Youtube:
-https://www.youtube.com/channel/UCmIL-UoO0RNQBHPrsbBTJmw/featured
-
-
-
-
+Link Demo : https://dmzhari.000webhostapp.com/
